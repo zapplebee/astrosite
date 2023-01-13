@@ -1,0 +1,17 @@
+/** @type {import('tailwindcss').Config} */
+module.exports = {
+  content: ["./src/**/*.{astro,html,js,jsx,md,mdx,svelte,ts,tsx,vue}"],
+  theme: {
+    extend: {
+      colors: {
+        pine: "#223632",
+        flannel: "#cf3307",
+        navy: "#07274b",
+      },
+    },
+  },
+  plugins: [
+    require("@tailwindcss/typography"),
+    // ...
+  ],
+};

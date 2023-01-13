@@ -1,0 +1,17 @@
+---
+export interface Props {
+	href: string;
+}
+
+const { href } = Astro.props;
+---
+<div class="w-100 flex justify-center not-prose">
+<iframe
+  src={`${href}/embed`}
+  class="mastodon-embed"
+  style="max-width: 100%; border: 0"
+  width="600"
+  allowfullscreen="allowfullscreen"
+></iframe>
+<script src="https://mastodon.cloud/embed.js" async="async"></script>
+</div>

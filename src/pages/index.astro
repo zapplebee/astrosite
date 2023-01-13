@@ -1,0 +1,41 @@
+---
+import Layout from '../layouts/Post.astro';
+import { format, isAfter } from 'date-fns'
+
+console.log(Astro.props)
+const posts = await Astro.glob('./**/*').then(e => {
+	const sorted = e.map(e => {
+		if(e.frontmatter?.date) {
+			return {...e, date: new Date(e?.frontmatter?.date)}
+		}
+		return {...e, date: new Date()}
+	}).sort((a,b) => {
+		return isAfter(a.date,b.date) ? -1 : 1
+	})
+	return sorted
+})
+---
+<Layout fixed={true}>
+	<main>
+		<h1>hi.</h1>
+		<h1>👋👋👋</h1>
+		<hr/>
+		<div>
+			{posts.map((post) => {
+
+				const wireTime = format(new Date(post.date ?? new Date()), 'yyyy-MM-dd')
+
+			  return (<article class="not-prose">
+
+				<a href={post.url}>
+				<time class="text-xs" datetime={wireTime}>{wireTime}</time>
+				<h2 class="m-0 font-bold text-lg underline">{post?.frontmatter?.title}</h2>
+				<p>{post?.frontmatter?.description}</p>
+			</a>
+
+			  </article>
+			  <hr/>)
+			})}
+			</div>
+	</main>
+</Layout>

@@ -1,0 +1,95 @@
+---
+title: Create an actually custom checkbox
+---
+
+import CodeSandbox from "./../components/CodeSandbox.astro";
+
+You have Googled to the ends of the Earth to figure out how to actually customize a checkbox.
+
+# Is this guide for me?
+
+- Have you ever written an SVG is _AND/OR_ do you have the assets you need for your checkboxes in hand?
+- Are you absolutely sure you don't want to use the native checkbox?
+- Like, really sure?
+- Because there's a lot good about using the platform.
+- Would you be happier using an off-the-shelf checkbox from a component library?
+- Are you willing to write a version of your checkbox for every state (focused, hovered, etc)?
+- Are you already using React? Because we're going to use it here. Though you absolutetly do not need to.
+
+# Let's see it working first.
+
+<CodeSandbox
+  src="https://codesandbox.io/embed/dry-sun-vzvnc?fontsize=14&hidenavigation=1&theme=dark"
+  title="dry-sun-vzvnc"
+/>
+
+# CSS Variables
+
+Let's take a look at `styles.css`. If you're unfamiliar with CSS variables this might feel a little strange.
+
+```css
+input[type="checkbox"] {
+  width: 1rem;
+  height: 1rem;
+  appearance: var(--appearance);
+  -webkit-appearance: var(--appearance);
+}
+
+input[type="checkbox"]::before {
+  width: 100%;
+  height: 100%;
+  content: "";
+  display: block;
+  background-size: contain;
+  background-image: var(--svgStringInitial);
+}
+
+input[type="checkbox"]:checked::before {
+  background-image: var(--svgStringChecked);
+}
+
+input[type="checkbox"]:disabled::before {
+  background-image: var(--svgStringDisabled);
+}
+```
+
+On line 4 we see
+
+```css
+appearance: var(--appearance);
+```
+
+This `var()` lets us access a value we've declared elsewhere. In this case we've declared it inline in the JSX.
+
+```jsx
+export default function Checkbox() {
+  const cssVariables = {
+    "--apperance": "none",
+    "--svgStringInitial": svgString("black"),
+    "--svgStringChecked": svgString("green"),
+    "--svgStringDisabled": svgString("gray"),
+  };
+  return <input style={cssVariables} type="checkbox" />;
+}
+```
+
+These variables are just the same as any other CSS property.
+
+You probably notice however though that we're setting `--appearance` here. This is a nice fallback measure in the case that the browser does not support CSS variables [(actually rather unlikely—but best to fallback to the system checkbox if so)](https://caniuse.com/css-variables).
+
+# Data URLs
+
+You're probably familiar with a base64 data url. But since our SVGs are made up of UTF-8 characters rather than a buffer, we can skip that extra encoding.
+
+_HOWEVER_ we do need to encode the string somehow because there's a mix of dashes, parens, colons, all over the string.
+
+Fortunately the browser gives us what we need here, [`encodeURIComponent()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/encodeURIComponent). The one gotcha that remains is that both single and double quotes are URI safe characters. They're control characters in CSS though so we have to encode them ourselves.
+
+```js
+const svgToDataUrl = (svg) => {
+  return (
+    "data:image/svg+xml," +
+    encodeURIComponent(svg).replace(/'/g, "%27").replace(/"/g, "%22")
+  );
+};
+```

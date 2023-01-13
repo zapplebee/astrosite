@@ -1,0 +1,10 @@
+---
+export interface Props {
+	href: string;
+}
+
+const { href } = Astro.props;
+---
+<div class="w-100 flex justify-center not-prose">
+<blockquote class="twitter-tweet sr-only" data-lang="en" data-theme="dark"><a href={href}>Twitter Link</a></blockquote>
+</div>

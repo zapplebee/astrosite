@@ -1,0 +1,57 @@
+---
+export interface Props {
+	title?: string;
+    fixed?: boolean;
+    frontmatter?: any;
+}
+
+
+import "@fontsource/ibm-plex-sans"
+
+const { title, fixed, frontmatter } = Astro.props;
+
+console.log({frontmatter})
+
+const titleStringParts = ['Zachary Skalko']
+if(title) {
+    titleStringParts.push(title)
+}
+if(frontmatter?.title){
+    titleStringParts.push(frontmatter?.title)
+}
+const titleString = titleStringParts.join(' > ')
+
+let metaDescription = "Zachary Skalko's Webpage"
+
+if(frontmatter?.description) {
+    metaDescription = frontmatter.description
+}
+---
+
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<meta name="generator" content={Astro.generator} />
+        <meta name="description" content={metaDescription}>
+        <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+		<title>{titleString}</title>
+	</head>
+	<body class="dark:bg-black min-h-full">
+<h1 class={fixed ? "text-xl p-4 text-white bg-pine uppercase fixed w-full border-b-2 border-flannel" : "border-b-2 border-flannel text-xl p-4 text-white bg-pine uppercase"}><a href="/">zachary skalko</a></h1>
+            <main class={fixed ? "prose dark:prose-invert p-12 m-auto pt-32" : "prose dark:prose-invert p-12 m-auto"}>
+                <slot/>
+            </main>
+	</body>
+</html>
+<style is:global>
+    .prose {
+        max-width: 120ch;
+
+    }
+
+    body { font-family: "IBM Plex Sans", sans-serif; }
+
+</style>

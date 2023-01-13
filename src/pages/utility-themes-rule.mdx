@@ -1,0 +1,42 @@
+---
+title: Utility themes rule
+---
+
+# Utility theme
+
+What do I mean when I say a utility theme? There's sure a lot of buzz around utility frameworks like Tailwind.
+
+It makes it really easy to apply the granular styles directly to your elements. It makes it harder to compose elements natively (though using the @apply directive makes it possible).
+
+A theme -- without even a framework -- can work the same way.
+
+```css
+:root {
+  --green: #0cad43;
+  --greenLight: #5ffa94;
+  --red: #ad2c3f;
+  --redLight: #fa072c;
+}
+```
+
+A semantic theme on the other hand will give _names_ to these colors over just calling them by their color name.
+
+```css
+:root {
+  --bgColor: #ddf7db;
+  --fgColor: #15283b;
+  --hilite: #ddfa07;
+  --warning: #ad3834;
+}
+```
+
+Let's look at some aspects of a designing a component library and think about how a Utility Theme and a Semantic Theme stack up
+
+| Aspect                     | Utility Theme | Semantic Theme | Justification                                                                                                                                                                        |
+| -------------------------- | ------------- | -------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Easy to start              | ✅            | ❌             | You don't need to name everything when you're first starting                                                                                                                         |
+| Easy to change             | 🤷‍♀️            | 🤷‍♀️             | Either you're going to be changing things with a search or by making sure that everything looks right when you change a named color                                                  |
+| Easy to learn              | ✅            | ❌             | All you have to know is what the color is, not what it means in the language of the designs                                                                                          |
+| Easy to add new components | ❌            | ✅             | You can leverage your named colors to help build up all your states easily rather than having to constantly make sure that the components are all using the same colors the same way |
+
+Honestly. I just prefer a utility theme. The benefits of a semantic theme usually are usually YAGNI (you aren't gonna need it) and frankly you have to spend a lot of brain power naming colors that could be better used naming components well.
